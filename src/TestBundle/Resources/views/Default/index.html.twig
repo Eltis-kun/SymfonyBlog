@@ -1,0 +1,46 @@
+{% extends "TestBundle::base.html.twig" %}
+{% block content %}
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+
+        <div class="col-lg-8 col-md-10 mx-auto">
+            {{ knp_menu_render('TestBundle:Builder:mainMenu') }}
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endfor %}
+            {% if articles is not empty %}
+            {% for article in articles %}
+                <div class="post-preview">
+                    <a href="{{ path('article_show', {'slug': article.slug}) }}">
+                        <h2 class="post-title">
+                            {{ article.title }}
+                        </h2>
+                        <h3 class="post-subtitle">
+                            {{ article.description }}
+                        </h3>
+                    </a>
+                    <p class="post-meta">Posted by
+                        <a href="mailto:{{ article.getUsers()|default('no author') }}">
+                            {{ article.getUsers()|default('no author') }}</a>
+                        on {{ article.createdAt|date("m/d/Y") }}</p>
+                </div>
+
+                <hr>
+            {% endfor %}
+            {% else %}
+                <div class="post-preview">
+                    <h2 class="post-title">
+                        Not found articles!
+                    </h2>
+                </div>
+
+                <hr>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
